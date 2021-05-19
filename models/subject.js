@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.subject.belongsToMany(models.kata, { through: "subjectsKatas" });
+      models.subject.belongsToMany(models.exercise, {
+        through: "subjectsKatas",
+      });
     }
   }
   subject.init(
