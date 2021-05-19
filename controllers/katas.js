@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+const axios = require("axios");
 
 router.get("/", async (req, res) => {
   const fetchKatas = await db.exercise.findAll(); // do something here
@@ -23,6 +24,21 @@ router.post("/", async (req, res) => {
   res.redirect("/katas");
 });
 
+// router.get("/:id", (req, res) => {
+//   db.exercise
+//     .findOne({
+//       where: { id: req.params.id },
+//       include: [db.subject],
+//     })
+//     .then((kata) => {
+//       if (!kata) throw Error();
+//       kata["color"] = "red";
+//       console.log(kata.name);
+//       res.render("katas/show", { kata });
+//     })
+//     .catch((error) => res.status(400).render("404"));
+// });
+
 router.get("/:id", (req, res) => {
   db.exercise
     .findOne({
@@ -30,11 +46,25 @@ router.get("/:id", (req, res) => {
       include: [db.subject],
     })
     .then((kata) => {
-      if (!kata) throw Error();
-      kata["color"] = "red";
-      res.render("katas/show", { kata });
-    })
-    .catch((error) => res.status(400).render("404"));
+      if (kata !== null) {
+        axios
+          .get(`https://www.codewars.com/api/v1/code-challenges/${kata.cw}`)
+          .then((kata) => {
+            const rank = kata.data.rank;
+            console.log("rank is: ", rank);
+            const description = kata.data.description;
+            const cw = kata.data.id;
+            const name = kata.data.name;
+            res.render("katas/show", {
+              rank: rank,
+              description: description,
+              name: name,
+              cw: cw,
+            });
+          })
+          .catch((error) => res.status(400).render("404"));
+      }
+    });
 });
 
 module.exports = router;

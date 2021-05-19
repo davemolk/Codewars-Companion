@@ -1,16 +1,18 @@
-<h2><%= kata.name %></h2>
+<h2><%= name %></h2>
+<p><%= rank.name %></p>
+<p><%= description %></p>
+
+<div class="special-class" markdown="1"><%= description %></div>
 
 <a
   class="btn btn-primary"
   target="_blank"
-  href="http://www.codewars.com/kata/<%= kata.cw %>/train/javascript"
+  href="http://www.codewars.com/kata/<%= cw %>/train/javascript"
   >train again</a
 >
 <a
   class="btn btn-primary"
   target="_blank"
-  href="http://www.codewars.com/kata/<%= kata.cw %>/solutions/javascript"
+  href="http://www.codewars.com/kata/<%= cw %>/solutions/javascript"
   >solutions</a
 >
-
-<p><%= kata.color %></p>
