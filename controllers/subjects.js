@@ -20,4 +20,15 @@ router.post("/", async (req, res) => {
   res.redirect("/subjects");
 });
 
+router.get("/:id", (req, res) => {
+  db.subject
+    .findOne({
+      include: [db.exercise],
+      where: { id: req.params.id },
+    })
+    .then((subject) => {
+      res.render("subjects/show", { subject: subject });
+    });
+});
+
 module.exports = router;
