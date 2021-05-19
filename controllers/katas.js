@@ -3,7 +3,10 @@ const router = express.Router();
 const db = require("../models");
 
 router.get("/", async (req, res) => {
-  const fetchKatas = await db.kata.findAll();
+  const fetchKatas = await db.kata.findAll(); // do something here
+  console.log("here is fetchKatas: ", fetchKatas);
+  fetchKatas.forEach((n) => (n.dataValues["color"] = "green"));
+  console.log("revised *******", fetchKatas);
   res.render("katas/index", { katas: fetchKatas });
 });
 
