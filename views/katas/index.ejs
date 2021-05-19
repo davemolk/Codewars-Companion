@@ -2,5 +2,16 @@
   <% katas.forEach(k => { %>
   <li><%= k.name %></li>
   <li><%= k.cw %></li>
+  <a
+    target="_blank"
+    href="http://www.codewars.com/kata/<%= k.cw %>/train/javascript"
+    >train again</a
+  >
+  <a
+    target="_blank"
+    href="http://www.codewars.com/kata/<%= k.cw %>/solutions/javascript"
+    >solutions</a
+  >
+
   <% }) %>
 </ul>

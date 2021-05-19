@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
-const { route } = require("./auth");
 
 router.get("/", async (req, res) => {
   const fetchKatas = await db.kata.findAll();
