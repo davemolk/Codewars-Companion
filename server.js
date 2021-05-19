@@ -6,6 +6,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("./config/ppConfig");
 const isLoggedIn = require("./middleware/isLoggedIn");
+const db = require("./models");
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
@@ -35,15 +36,18 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {});
 });
-
-app.use("/auth", require("./controllers/auth"));
 
 app.get("/profile", isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render("profile", { id, name, email });
 });
+
+// ************************************
+app.use("/auth", require("./controllers/auth"));
+app.use("/katas", require("./controllers/katas"));
+app.use("/subjects", require("./controllers/subjects"));
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {

@@ -1,16 +1,16 @@
 {
   "development": {
-    "database": "express_auth_dev",
+    "database": "codewars_companion_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "database": "express_auth_test",
+    "database": "codewars_companion_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "database": "express_auth_production",
+    "database": "codewars_companion_production",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
