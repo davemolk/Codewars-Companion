@@ -23,11 +23,18 @@ router.post("/", async (req, res) => {
   res.redirect("/katas");
 });
 
-// router.get("/:id", (req, res) => {
-//   db.exercise.findOne({
-//     where: { id: req.params.id },
-//     include: [],
-//   });
-// });
+router.get("/:id", (req, res) => {
+  db.exercise
+    .findOne({
+      where: { id: req.params.id },
+      include: [db.subject],
+    })
+    .then((kata) => {
+      if (!kata) throw Error();
+      kata["color"] = "red";
+      res.render("katas/show", { kata });
+    })
+    .catch((error) => res.status(400).render("404"));
+});
 
 module.exports = router;
