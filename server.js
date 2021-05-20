@@ -39,15 +39,12 @@ app.use((req, res, next) => {
 
 app.get("/", isLoggedIn, (req, res) => {
   const { id, name, email, codewars_username } = req.user.get();
-  console.log("******************", codewars_username);
   axios
     .get(
       `https://www.codewars.com/api/v1/users/${codewars_username}/code-challenges/completed?`
     )
     .then((response) => {
-      // console.log("full response: ", response);
       let myKatasFull = response.data.data;
-      console.log("here is response.data.data:", myKatasFull);
       res.render("index", { id, myKatasFull });
     });
 });
