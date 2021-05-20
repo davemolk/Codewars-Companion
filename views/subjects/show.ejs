@@ -1,7 +1,11 @@
-<h2><%= subject.name %></h2>
+<h2>Katas with <%= subject.name %></h2>
 
-<h4>Katas with <%= subject.name %></h4>
+<% subject.exercises.forEach (n => { %>
+<h3>
+  <a href="/katas/<%=n.id%>"> <%= n.name %> </a>
+</h3>
+<hr />
+<% }) %>
 
-<div>
-  <a href="/views/katas/<%= subject.id %> "></a>
-</div>
+<br />
+<a href="/">&larr; Back Home</a>
