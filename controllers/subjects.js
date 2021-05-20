@@ -23,12 +23,15 @@ router.post("/", async (req, res) => {
 router.get("/:id", (req, res) => {
   db.subject
     .findOne({
-      include: [db.exercise],
       where: { id: req.params.id },
+      include: [db.exercise],
     })
     .then((subject) => {
-      res.render("subjects/show", { subject: subject });
-    });
+      console.log("***********************************");
+      console.log("here is subject", subject);
+      res.render("subjects/show", { subject });
+    })
+    .catch((error) => res.status(400).redirect("404"));
 });
 
 module.exports = router;
