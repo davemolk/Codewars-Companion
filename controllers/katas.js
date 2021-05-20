@@ -10,7 +10,9 @@ router.get("/", isLoggedIn, async (req, res) => {
 });
 
 router.get("/new", isLoggedIn, (req, res) => {
-  res.render("katas/new");
+  db.subject.findAll().then((subjects) => {
+    res.render("katas/new", { subjects });
+  });
 });
 
 router.post("/", isLoggedIn, async (req, res) => {

@@ -1,9 +1,24 @@
 <form action="/katas" method="POST">
-  <label for="name">Kata name</label>
-  <input required type="text" id="name" name="name" />
+  <div class="form-group">
+    <label for="name">Kata name</label>
+    <input required type="text" id="name" name="name" />
+  </div>
 
-  <label for="cw">Kata Id</label>
-  <input required type="text" id="cw" name="cw" />
+  <div class="form-group">
+    <label for="cw">Kata Id</label>
+    <input required type="text" id="cw" name="cw" />
+  </div>
+
+  <div class="form-group">
+    <p>Existing subjects</p>
+    <% subjects.forEach(s => { %>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="existing_subjects" value="<%= s.name %> " />
+      <%= s.name %>
+    </label>
+    <% }) %>
+  </div>
+
   <button type="submit">Submit kata</button>
 </form>
 
