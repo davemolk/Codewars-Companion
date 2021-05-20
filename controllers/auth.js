@@ -13,7 +13,7 @@ router.get("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logOut(); // logs the user out of the session
-  req.flash("success", "Logging out... See you next time!");
+  req.flash("success", "See you next time!");
   res.redirect("/");
 });
 
@@ -29,11 +29,11 @@ router.post(
 
 router.post("/signup", async (req, res) => {
   // we now have access to the user info (req.body);
-  const { email, name, password } = req.body; // goes and us access to whatever key/value inside of the object
+  const { email, name, password, codewars_username } = req.body; // goes and us access to whatever key/value inside of the object
   try {
     const [user, created] = await db.user.findOrCreate({
       where: { email },
-      defaults: { name, password },
+      defaults: { name, password, codewars_username },
     });
 
     if (created) {
@@ -41,13 +41,13 @@ router.post("/signup", async (req, res) => {
       console.log(`----- ${user.name} was created -----`);
       const successObject = {
         successRedirect: "/",
-        successFlash: `Welcome ${user.name}. Account was created and logging in...`,
+        successFlash: `Welcome ${user.name}. Account was created.`,
       };
       //
       passport.authenticate("local", successObject)(req, res);
     } else {
       // Send back email already exists
-      req.flash("error", "Email already exists");
+      req.flash("error", "Account already exists");
       res.redirect("/auth/signup"); // redirect the user back to sign up page to try again
     }
   } catch (error) {

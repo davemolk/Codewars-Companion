@@ -1,1 +1,12 @@
-<h2>Homepage</h2>
+<h2>All my katas</h2>
+<% myKatasFull.forEach( kata => { %>
+<div>
+  <h3><%= kata.name %></h3>
+  <form method="POST" action="/katas">
+    <input hidden type="text" name="name" value="<%= kata.name %>" />
+    <input hidden type="text" name="cw" value="<%= kata.id %>" />
+    <input hidden type="integer" name="id" value="<%= id %>" />
+    <button type="submit">Add to Database</button>
+  </form>
+  <% })%>
+</div>

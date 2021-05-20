@@ -11,6 +11,17 @@ const db = require("./models");
 // }
 // createUser();
 
+async function createUser() {
+  const newUser = await db.user.create({
+    name: "Lucas",
+    email: "lucas@gmail.com",
+    password: "test12345",
+    codewars_username: "knotman90",
+  });
+  console.log(newUser);
+}
+// createUser();
+
 async function createSubject() {
   const newSubject = await db.subject.create({
     name: "arrays",
@@ -78,4 +89,4 @@ async function addKataToSubject() {
   console.log(relationInfo);
 }
 
-addKataToSubject();
+// addKataToSubject();

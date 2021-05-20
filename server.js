@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const passport = require("./config/ppConfig");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const db = require("./models");
+const axios = require("axios");
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
@@ -25,6 +26,7 @@ app.use(
   })
 );
 app.use(flash());
+
 app.use(passport.initialize()); // Initialize passport
 app.use(passport.session()); // Add a session
 
@@ -35,13 +37,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.render("index", {});
+app.get("/", isLoggedIn, (req, res) => {
+  const { id, name, email, codewars_username } = req.user.get();
+  console.log("******************", codewars_username);
+  axios
+    .get(
+      `https://www.codewars.com/api/v1/users/${codewars_username}/code-challenges/completed?`
+    )
+    .then((response) => {
+      // console.log("full response: ", response);
+      let myKatasFull = response.data.data;
+      console.log("here is response.data.data:", myKatasFull);
+      res.render("index", { id, myKatasFull });
+    });
 });
 
 app.get("/profile", isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get();
-  res.render("profile", { id, name, email });
+  const { id, name, email, codewars_username } = req.user.get();
+  res.render("profile", { id, name, email, codewars_username });
 });
 
 // ************************************
