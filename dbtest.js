@@ -1,17 +1,17 @@
 const db = require("./models");
 
-// async function createUser() {
-//   const newUser = await db.user.create({
-//     name: "Dave",
-//     email: "dave@gmail.com",
-//     password: "test12345",
-//     codewars_username: "davemolk",
-//   });
-//   console.log(newUser);
-// }
+async function createUser() {
+  const newUser = await db.user.create({
+    name: "Dave",
+    email: "dave@gmail.com",
+    password: "test12345",
+    codewars_username: "davemolk",
+  });
+  console.log(newUser);
+}
 // createUser();
 
-async function createUser() {
+async function createUser2() {
   const newUser = await db.user.create({
     name: "Lucas",
     email: "lucas@gmail.com",
@@ -20,7 +20,7 @@ async function createUser() {
   });
   console.log(newUser);
 }
-// createUser();
+// createUser2();
 
 async function createSubject() {
   const newSubject = await db.subject.create({

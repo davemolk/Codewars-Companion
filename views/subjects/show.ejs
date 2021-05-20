@@ -9,8 +9,12 @@
 
 <br />
 
-<form method="POST" action="/subjects/<%=subject.id%>?_method=DELETE">
+<!-- <form method="POST" action="/subjects/<%=subject.id%>?_method=DELETE">
   <button type="submit" class="btn btn-danger">Delete this subject</button>
+</form> -->
+
+<form action="/subjects/<%=subject.id %>?_method=DELETE" method="POST">
+  <button type="submit" class="btn btn-primary">Delete</button>
 </form>
 
 <br />

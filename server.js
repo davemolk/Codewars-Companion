@@ -8,6 +8,7 @@ const passport = require("./config/ppConfig");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const db = require("./models");
 const axios = require("axios");
+const methodOverride = require("method-override");
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
@@ -36,6 +37,8 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use(methodOverride("_method"));
 
 app.get("/", isLoggedIn, (req, res) => {
   const { id, name, email, codewars_username } = req.user.get();

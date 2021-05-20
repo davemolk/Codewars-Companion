@@ -33,28 +33,37 @@ router.get("/:id", isLoggedIn, (req, res) => {
     .catch((error) => res.status(400).redirect("404"));
 });
 
-router.delete("/:id", isLoggedIn, (req, res) => {
-  db.subjectsKatas
-    .destroy({
-      where: { subjectId: req.params.id },
-    })
-    .then((response) => {
-      db.subject
-        .destroy({
-          where: { id: req.params.id },
-        })
-        .then((response) => {
-          res.redirect("/subjects");
-        })
-        .catch((err) => {
-          console.log(err);
-          res.render("main/404");
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.render("main/404");
-    });
+// doesn't work either...
+router.delete("/:idx", async function (req, res) {
+  const deleteSubject = await db.subject.destroy({
+    where: { id: req.params.idx },
+  });
+  res.redirect("/subjects");
 });
+
+// from solution, doesn't work
+// router.delete("/:id", isLoggedIn, (req, res) => {
+//   db.subjectsKatas
+//     .destroy({
+//       where: { subjectId: req.params.id },
+//     })
+//     .then((response) => {
+//       db.subject
+//         .destroy({
+//           where: { id: req.params.id },
+//         })
+//         .then((response) => {
+//           res.redirect("/subjects");
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//           res.render("main/404");
+//         });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.render("main/404");
+//     });
+// });
 
 module.exports = router;

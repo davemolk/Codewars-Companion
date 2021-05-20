@@ -20,31 +20,32 @@ router.get("/new", isLoggedIn, (req, res) => {
     });
 });
 
-router.post("/", isLoggedIn, async (req, res) => {
-  const [subject, created] = await db.subject.findOrCreate({
-    where: { name: req.body.subject },
-    defaults: { name: req.body.subject },
-  });
-  subject
-    .createExercise({
-      name: req.body.name,
-      cw: req.body.cw,
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).render("404");
-    });
-  res.redirect("/katas");
-});
-
 // router.post("/", isLoggedIn, async (req, res) => {
-//   const { name, cw } = req.body;
-//   console.log(name, cw);
-
-//   const newKata = await db.exercise.create({ name, cw });
-//   console.log(newKata);
+//   const [subject, created] = await db.subject.findOrCreate({
+//     where: { name: req.body.subject },
+//   });
+//   await subject
+//     .createExercise({
+//       name: req.body.name,
+//       cw: req.body.cw,
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(400).render("404");
+//     });
 //   res.redirect("/katas");
 // });
+
+router.post("/", isLoggedIn, async (req, res) => {
+  const { name, cw } = req.body;
+  console.log(name, cw);
+
+  const foundUser = await db.user.findByPk(req.user.id);
+  const newKata = await db.exercise.create({ name, cw });
+  const newAssociation = await foundUser.addExercise(newKata);
+  console.log(newAssociation);
+  res.redirect("/katas");
+});
 
 router.get("/:id", isLoggedIn, (req, res) => {
   db.exercise
@@ -54,18 +55,21 @@ router.get("/:id", isLoggedIn, (req, res) => {
     })
     .then((kata) => {
       if (kata !== null) {
+        console.log("here is kata round 1: ", kata);
         axios
           .get(`https://www.codewars.com/api/v1/code-challenges/${kata.cw}`)
-          .then((kata) => {
-            const rank = kata.data.rank;
-            const description = kata.data.description;
-            const cw = kata.data.id;
-            const name = kata.data.name;
+          .then((kataRefetch) => {
+            console.log("here is kata round 2: ", kata);
+            const rank = kataRefetch.data.rank;
+            const description = kataRefetch.data.description;
+            const cw = kataRefetch.data.id;
+            const name = kataRefetch.data.name;
             res.render("katas/show", {
               rank: rank,
               description: description,
               name: name,
               cw: cw,
+              kata: kata,
             });
           })
           .catch((error) => res.status(400).render("404"));
