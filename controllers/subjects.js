@@ -27,11 +27,33 @@ router.get("/:id", (req, res) => {
       include: [db.exercise],
     })
     .then((subject) => {
-      console.log("***********************************");
-      console.log("here is subject", subject);
       res.render("subjects/show", { subject });
     })
     .catch((error) => res.status(400).redirect("404"));
+});
+
+router.delete("/:id", (req, res) => {
+  db.subjectsKatas
+    .destroy({
+      where: { subjectId: req.params.id },
+    })
+    .then((response) => {
+      db.subject
+        .destroy({
+          where: { id: req.params.id },
+        })
+        .then((response) => {
+          res.redirect("/subjects");
+        })
+        .catch((err) => {
+          console.log(err);
+          res.render("main/404");
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.render("main/404");
+    });
 });
 
 module.exports = router;
