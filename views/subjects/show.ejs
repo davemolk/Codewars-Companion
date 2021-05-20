@@ -4,17 +4,14 @@
 <h3>
   <a href="/katas/<%=n.id%>"> <%= n.name %> </a>
 </h3>
+
 <hr />
 <% }) %>
 
 <br />
 
-<!-- <form method="POST" action="/subjects/<%=subject.id%>?_method=DELETE">
-  <button type="submit" class="btn btn-danger">Delete this subject</button>
-</form> -->
-
 <form action="/subjects/<%=subject.id %>?_method=DELETE" method="POST">
-  <button type="submit" class="btn btn-primary">Delete</button>
+  <button type="submit" class="btn btn-danger">Delete</button>
 </form>
 
 <br />

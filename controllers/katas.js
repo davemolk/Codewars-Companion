@@ -77,6 +77,13 @@ router.get("/:id", isLoggedIn, (req, res) => {
     });
 });
 
+router.delete("/:idx", async function (req, res) {
+  const deleteKata = await db.exercise.destroy({
+    where: { id: req.params.idx },
+  });
+  res.redirect("/katas");
+});
+
 // *******************
 // ISSUE WITH SCOPING?
 // router.get("/:id", isLoggedIn, (req, res) => {

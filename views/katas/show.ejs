@@ -16,12 +16,19 @@
 
 <br />
 
-<% kata.subjects.forEach(s => { %>
+<!-- <% kata.subjects.forEach(s => { %>
 <a href="/subjects/<%=s.id%>"> #<%= s.name %> </a>
-<% }) %>
+<% }) %> -->
 
 <br />
 <p><%= description %></p>
 
 <br />
+
+<form action="/katas/<%=kata.id %>?_method=DELETE" method="POST">
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
+<br />
+
 <a href="/">&larr; Back Home</a>
