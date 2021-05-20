@@ -1,5 +1,6 @@
 <h2><%= name %></h2>
 <p><%= rank.name %></p>
+<br />
 <a
   class="btn btn-primary"
   target="_blank"
@@ -13,6 +14,13 @@
   >solutions</a
 >
 
+<br />
+
+<% kata.subjects.forEach(s => { %>
+<a href="/subjects/<%=s.id%>"> #<%= s.name %> </a>
+<% }) %>
+
+<br />
 <p><%= description %></p>
 
 <br />
