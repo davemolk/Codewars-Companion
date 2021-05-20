@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+const isLoggedIn = require("../middleware/isLoggedIn");
 
-router.get("/", async (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
   const fetchSubjects = await db.subject.findAll();
   res.render("subjects/index", { subjects: fetchSubjects });
 });
 
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("subjects/new");
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isLoggedIn, async (req, res) => {
   const { name } = req.body;
   console.log(name);
 
@@ -20,7 +21,7 @@ router.post("/", async (req, res) => {
   res.redirect("/subjects");
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", isLoggedIn, (req, res) => {
   db.subject
     .findOne({
       where: { id: req.params.id },
@@ -32,7 +33,7 @@ router.get("/:id", (req, res) => {
     .catch((error) => res.status(400).redirect("404"));
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isLoggedIn, (req, res) => {
   db.subjectsKatas
     .destroy({
       where: { subjectId: req.params.id },

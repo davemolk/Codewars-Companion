@@ -2,20 +2,18 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const axios = require("axios");
+const isLoggedIn = require("../middleware/isLoggedIn");
 
-router.get("/", async (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
   const fetchKatas = await db.exercise.findAll(); // do something here
-  console.log("here is fetchKatas: ", fetchKatas);
-  fetchKatas.forEach((n) => (n.dataValues["color"] = "green"));
-  console.log("revised *******", fetchKatas);
   res.render("katas/index", { katas: fetchKatas });
 });
 
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("katas/new");
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isLoggedIn, async (req, res) => {
   const { name, cw } = req.body;
   console.log(name, cw);
 
@@ -24,22 +22,7 @@ router.post("/", async (req, res) => {
   res.redirect("/katas");
 });
 
-// router.get("/:id", (req, res) => {
-//   db.exercise
-//     .findOne({
-//       where: { id: req.params.id },
-//       include: [db.subject],
-//     })
-//     .then((kata) => {
-//       if (!kata) throw Error();
-//       kata["color"] = "red";
-//       console.log(kata.name);
-//       res.render("katas/show", { kata });
-//     })
-//     .catch((error) => res.status(400).render("404"));
-// });
-
-router.get("/:id", (req, res) => {
+router.get("/:id", isLoggedIn, (req, res) => {
   db.exercise
     .findOne({
       where: { id: req.params.id },
