@@ -1,0 +1,5 @@
+<form method="POST" action="/subjects/edit/<%=subject.id%>?_method=PUT">
+  <label>Name</label>
+  <input required type="text" name="name" value="<%= subject.name %>" />
+  <input type="submit" />
+</form>

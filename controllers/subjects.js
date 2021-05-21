@@ -35,10 +35,25 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
 // doesn't work either...
 router.delete("/:idx", async function (req, res) {
+  // add isLoggedIn
   const deleteSubject = await db.subject.destroy({
     where: { id: req.params.idx },
   });
   res.redirect("/subjects");
+});
+
+router.put("/edit/:idx", isLoggedIn, async (req, res) => {
+  try {
+    const thisSubject = await db.subject.findOne({
+      where: { id: req.params.idx },
+    });
+    const updatedSubject = await thisSubject.update({
+      name: req.body.name,
+    });
+    res.redirect(`/subjects/${req.params.idx}`);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // from solution, doesn't work

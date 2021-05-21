@@ -1,6 +1,10 @@
 <ul>
-  <% subjects.forEach(s => { %>
+  <% subjects.forEach((s, index) => { %>
   <li><%= s.name %></li>
+  <form method="get" action="/subjects/edit/<%= s.id %> ">
+    <button type="submit" class="btn btn-primary">edit</button>
+  </form>
+
   <% }) %>
 </ul>
 
