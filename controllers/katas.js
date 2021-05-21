@@ -13,6 +13,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   db.subject
     .findAll()
     .then((subjects) => {
+      console.log("******************* here are subjects", subjects);
       res.render("katas/new", { subjects });
     })
     .catch((error) => {
@@ -20,32 +21,33 @@ router.get("/new", isLoggedIn, (req, res) => {
     });
 });
 
-// router.post("/", isLoggedIn, async (req, res) => {
-//   const [subject, created] = await db.subject.findOrCreate({
-//     where: { name: req.body.subject },
-//   });
-//   await subject
-//     .createExercise({
-//       name: req.body.name,
-//       cw: req.body.cw,
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       res.status(400).render("404");
-//     });
-//   res.redirect("/katas");
-// });
-
 router.post("/", isLoggedIn, async (req, res) => {
-  const { name, cw } = req.body;
-  console.log(name, cw);
-
+  const [subject, created] = await db.subject.findOrCreate({
+    where: { name: req.body.subject },
+  });
+  const newKata = await subject.createExercise({
+    name: req.body.name,
+    cw: req.body.cw,
+  });
   const foundUser = await db.user.findByPk(req.user.id);
-  const newKata = await db.exercise.create({ name, cw });
-  const newAssociation = await foundUser.addExercise(newKata);
-  console.log(newAssociation);
+  await foundUser.addExercise(newKata);
   res.redirect("/katas");
 });
+
+// router.post("/", isLoggedIn, async (req, res) => {
+//   const { name, cw, subject } = req.body;
+//   console.log("subject is ", subject);
+
+//   const foundSubject = await db.subject.findOne({ where: { name: subject } });
+//   console.log("found subject: ", foundSubject);
+//   const foundUser = await db.user.findByPk(req.user.id);
+//   console.log("found user: ", foundUser);
+//   const newKata = await db.exercise.create({ name, cw });
+//   const newAssociation = await foundUser.addExercise(newKata);
+//   newKata.addSubject(foundSubject);
+//   // console.log("new association is ", newAssociation);
+//   res.redirect("/katas");
+// });
 
 router.get("/:id", isLoggedIn, (req, res) => {
   db.exercise
