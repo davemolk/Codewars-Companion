@@ -33,14 +33,10 @@ router.get("/edit/:id", isLoggedIn, async (req, res) => {
 
 router.post("/", isLoggedIn, async (req, res) => {
   const { name } = req.body;
-  console.log(name);
-
   const newSubject = await db.subject.create({ name });
-  console.log(newSubject);
   res.redirect("/subjects");
 });
 
-// doesn't work either...
 router.delete("/:idx", isLoggedIn, async function (req, res) {
   const deleteSubject = await db.subject.destroy({
     where: { id: req.params.idx },
@@ -61,30 +57,5 @@ router.put("/edit/:idx", isLoggedIn, async (req, res) => {
     console.log(error);
   }
 });
-
-// from solution, doesn't work
-// router.delete("/:id", isLoggedIn, (req, res) => {
-//   db.subjectsKatas
-//     .destroy({
-//       where: { subjectId: req.params.id },
-//     })
-//     .then((response) => {
-//       db.subject
-//         .destroy({
-//           where: { id: req.params.id },
-//         })
-//         .then((response) => {
-//           res.redirect("/subjects");
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//           res.render("main/404");
-//         });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.render("main/404");
-//     });
-// });
 
 module.exports = router;
