@@ -1,40 +1,41 @@
-# Express Authentication
+# Codewars Companion
 
-Express authentication template using Passport + Flash messages + custom middleware
+Codewars is a great resource for practicing different coding languages and strategies, but it lacks any ability to organize your completed katas. Codewars Companion allows you to create tags and organize your completed katas by subject, thus saving you from having to dig through your archives for what you want.
 
-## What it includes
+[TODO] LINK, TEST USER LOGIN, LOGIN PAGE SCREENSHOT
 
-* Sequelize user model / migration
-* Settings for PostgreSQL
-* Passport and passport-local for authentication
-* Sessions to keep user logged in between pages
-* Flash messages for errors and successes
-* Passwords that are hashed with BCrypt
-* EJS Templating and EJS Layouts
+## Technologies Used
 
-### User Model
+- Node/Express with EJS templating and layouts
+- Passport and Bcrypt
+- Sequelize
+- Codewars API with Axios
+- [TODO] FINISH THIS
 
-| Column Name | Data Type | Notes |
-| --------------- | ------------- | ------------------------------ |
-| id | Integer | Serial Primary Key, Auto-generated |
-| name | String | Must be provided |
-| email | String | Must be unique / used for login |
-| password | String | Stored as a hash |
-| createdAt | Date | Auto-generated |
-| updatedAt | Date | Auto-generated |
+### User Stories
 
-### Default Routes
+The intended user is someone active on Codewars who wants a customizable way to organize their kata solutions.
 
-| Method | Path | Location | Purpose |
-| ------ | ---------------- | -------------- | ------------------- |
-| GET | / | server.js | Home page |
-| GET | /auth/login | auth.js | Login form |
-| GET | /auth/signup | auth.js | Signup form |
-| POST | /auth/login | auth.js | Login user |
-| POST | /auth/signup | auth.js | Creates User |
-| GET | /auth/logout | auth.js | Removes session info |
-| GET | /profile | server.js | Regular User Profile |
+- As a user, I want to...
+  - be able to tag my codewars katas with a subject. For instance, I would like to group together all katas that focus on arrays.
+  - be able to tag a single kata with multiple subjects.
+  - be able to select a subject and see all katas associated with that subject.
 
+### Routes and Models
+
+**Routes**
+
+| CRUD | Route        | Function                               |
+| ---- | ------------ | -------------------------------------- |
+| GET  | /            | home page                              |
+| GET  | /auth/login  | renders login form                     |
+| POST | /auth/login  | logs in existing user                  |
+| GET  | /auth/signup | renders signup form                    |
+| POST | /auth/signup | creates a new user                     |
+| GET  | /auth/logout | logs out user and removes session info |
+| GET  | /profile     | renders user profile                   |
+| GET  | /profile     | renders user profile                   |
+| GET  | /profile     | renders user profile                   |
 
 ## `1` Create Database & Update Config
 
@@ -66,11 +67,12 @@ createdb express_auth_dev
 }
 ```
 
-
 ## `2` Fork & Clone Project & Install Dependencies
+
 `1` The first thing that we are going to do is `fork` and `clone`
 
 `2` Now we are going to install the current dependencies that are listed inside of `package.json`
+
 ```text
 npm install
 ```
@@ -80,12 +82,13 @@ npm install
 ```text
 npm install bcrypt connect-flash passport passport-local express-sessions method-override
 ```
--  [bcrypt](https://www.npmjs.com/package/bcrypt): A library to help you hash passwords. ( [wikipedia](https://en.wikipedia.org/wiki/Bcrypt) ) 
-    - Blowfish has a 64-bit block size and a variable key length from 32 bits up to 448 bits.
+
+- [bcrypt](https://www.npmjs.com/package/bcrypt): A library to help you hash passwords. ( [wikipedia](https://en.wikipedia.org/wiki/Bcrypt) )
+  - Blowfish has a 64-bit block size and a variable key length from 32 bits up to 448 bits.
 - [connect-flash](https://github.com/jaredhanson/connect-flash): The flash is an area of the session used for storing messages that will be used to to display to the user. Flash is typically used with redirects.
-- [passport](https://www.passportjs.org/docs/): Passport is authentication middleware for Node.js. It is designed to do one thing authenticate requests. There are over 500+ strategies used to authenticate a user; however, we will be using one - *passport-local* Passport is authentication middleware for Node. It is designed to serve a singular purpose: authenticate requests
+- [passport](https://www.passportjs.org/docs/): Passport is authentication middleware for Node.js. It is designed to do one thing authenticate requests. There are over 500+ strategies used to authenticate a user; however, we will be using one - _passport-local_ Passport is authentication middleware for Node. It is designed to serve a singular purpose: authenticate requests
 - [passport-local](http://www.passportjs.org/packages/passport-local/): The local authentication strategy authenticates users using a username and password. The strategy requires a verify callback, which accepts these credentials and calls done providing a user. [passport-local](http://www.passportjs.org/packages/passport-local/)
-- [express-session](https://github.com/expressjs/session): Create a session middleware with given *options*.
+- [express-session](https://github.com/expressjs/session): Create a session middleware with given _options_.
 - [method-override](https://github.com/expressjs/method-override): Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
 
 `4` Make a commit
@@ -155,11 +158,9 @@ sequelize model:create --name user --attributes name:string,email:string,passwor
 Validations are used as constraints for a column in a table that requires an entry in the database to follow various rules set in order for that data to be entered into the database.
 
 ```js
-'use strict';
+"use strict";
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
@@ -170,44 +171,49 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  user.init({
-    name: {
-      type: DataTypes.STRING,
-      validate: {
-       len: {
-        args: [1,99],
-        msg: 'Name must be between 1 and 99 characters'
-       }
-      }
+  }
+  user.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        validate: {
+          len: {
+            args: [1, 99],
+            msg: "Name must be between 1 and 99 characters",
+          },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          isEmail: {
+            // does a boolean check
+            msg: "Invalid email",
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        validate: {
+          len: {
+            args: [8, 99],
+            msg: "Password must be between 8 and 99 characters",
+          },
+        },
+      },
     },
-    email: {
-      type: DataTypes.STRING,
-      validate: {
-        isEmail: { // does a boolean check
-          msg: 'Invalid email'
-        }
-      }
-    },
-    password: {
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [8,99],
-          msg: 'Password must be between 8 and 99 characters'
-        }
-      }
+    {
+      sequelize,
+      modelName: "user",
     }
-  }, {
-    sequelize,
-    modelName: 'user',
-  });
+  );
 
-  return user; // add functions above 
+  return user; // add functions above
 };
 ```
 
-`3` Make a *commit* message
+`3` Make a _commit_ message
+
 ```text
 git add .
 git commit -m "user: Add model and validations
@@ -216,8 +222,9 @@ git commit -m "user: Add model and validations
 ## `5` Add Methods to `user` Model to Hash Password, Etc.
 
 `1` Import `bcrypt` at the top of `user` model
+
 ```js
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 ```
 
 `2` Create a hook `beforeCreate` to hash **password** inside `user` model before it enters the database
@@ -226,34 +233,35 @@ Inside of the user model, add the following hook to hash password
 
 ```js
 // Before a user is created, we are encrypting the password and using hash in its place
-user.addHook('beforeCreate', (pendingUser) => { // pendingUser is user object that gets passed to DB
-    // Bcrypt is going to hash the password
-    let hash = bcrypt.hashSync(pendingUser.password, 12); // hash 12 times
-    pendingUser.password = hash; // this will go to the DB
-});  
+user.addHook("beforeCreate", (pendingUser) => {
+  // pendingUser is user object that gets passed to DB
+  // Bcrypt is going to hash the password
+  let hash = bcrypt.hashSync(pendingUser.password, 12); // hash 12 times
+  pendingUser.password = hash; // this will go to the DB
+});
 ```
 
 `3` Add `validPassword()` method to `user` model that will compare a password entered with the hashed password
 
 ```js
- // Check the password on Sign-In and compare it to the hashed password in the DB
-user.prototype.validPassword = function(typedPassword) {
-    let isCorrectPassword = bcrypt.compareSync(typedPassword, this.password); // check to see if password is correct.
+// Check the password on Sign-In and compare it to the hashed password in the DB
+user.prototype.validPassword = function (typedPassword) {
+  let isCorrectPassword = bcrypt.compareSync(typedPassword, this.password); // check to see if password is correct.
 
-    return isCorrectPassword;
-}
+  return isCorrectPassword;
+};
 ```
 
 `4` Add `toJSON()` method to `user` model that will delete password to prevent from being used on the client
 
 ```js
 // return an object from the database of the user without the encrypted password
-user.prototype.toJSON = function() {
-    let userData = this.get(); 
-    delete userData.password; // it doesn't delete password from database, only removes it. 
-    
-    return userData;
-}
+user.prototype.toJSON = function () {
+  let userData = this.get();
+  delete userData.password; // it doesn't delete password from database, only removes it.
+
+  return userData;
+};
 ```
 
 `5` Verify that model looks like the following code snippet ( [here](https://github.com/romebell/express_authentication/blob/main/solutions.md#1-userjs) )
@@ -275,9 +283,10 @@ SECRET_SESSION=alldayidreamaboutsecretsession
 `2` Add `.env` to .gitignore file
 
 `3` Import the `connect-flash` and `express-session` under the imports inside the server file
+
 ```js
-const session = require('express-session');
-const flash = require('connect-flash');
+const session = require("express-session");
+const flash = require("connect-flash");
 ```
 
 `4` Add `SECRET_SESSION` variable that will be a reference to the environment variable set in step `1`. Print to make sure the variable is displaying inside the **terminal**
@@ -290,17 +299,21 @@ console.log(SECRET_SESSION);
 `5` Add session and flash middleware to be used throughout app inside `server.js`
 
 Add below the current middleware is located ( before routes )
-```js
-app.use(session({
-  secret: SECRET_SESSION,    // What we actually will be giving the user on our site as a session cookie
-  resave: false,             // Save the session even if it's modified, make this false
-  saveUninitialized: true    // If we have a new session, we save it, therefore making that true
-}));
 
-app.use(flash());            // flash middleware
+```js
+app.use(
+  session({
+    secret: SECRET_SESSION, // What we actually will be giving the user on our site as a session cookie
+    resave: false, // Save the session even if it's modified, make this false
+    saveUninitialized: true, // If we have a new session, we save it, therefore making that true
+  })
+);
+
+app.use(flash()); // flash middleware
 ```
 
-`7` Add **function**  as middle to store flash messages and user on `res.locals` 
+`7` Add **function** as middle to store flash messages and user on `res.locals`
+
 ```js
 app.use((req, res, next) => {
   console.log(res.locals);
@@ -310,10 +323,11 @@ app.use((req, res, next) => {
 });
 ```
 
-`8` Make *commit* message
+`8` Make _commit_ message
+
 ```text
 git add .
-git commit -m "Create env variable and add session and flash middleware" 
+git commit -m "Create env variable and add session and flash middleware"
 ```
 
 ## `7` Create Passport Configuration
@@ -321,36 +335,40 @@ git commit -m "Create env variable and add session and flash middleware"
 `1` Create a file called `ppConfig.js` inside of the `config` folder
 
 `2` Import `passport`, `passport-local` and the `database` into **`ppConfig.js`** file
+
 ```js
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 // Database
-const db = require('../models');
+const db = require("../models");
 ```
 
 `3` Create a new instance of a `LocalStrategy`
 
 ```js
-const STRATEGY = new LocalStrategy({
-    usernameField: 'email',         // looks for an email field as the username
-    passwordField: 'password'       // looks for an password field as the password
-    }, async (email, password, cb) => {
-        try {
-            const user = await db.user.findOne({
-                where: { email }
-            });
+const STRATEGY = new LocalStrategy(
+  {
+    usernameField: "email", // looks for an email field as the username
+    passwordField: "password", // looks for an password field as the password
+  },
+  async (email, password, cb) => {
+    try {
+      const user = await db.user.findOne({
+        where: { email },
+      });
 
-            if (!user || !user.validPassword(password)) { 
-                cb(null, false);     // if no user or invalid password, return false
-            } else {
-                cb(null, user);
-            }
-        } catch (err) {
-            console.log('------- Error below -----------');
-            console.log(err);
-        }
-})
+      if (!user || !user.validPassword(password)) {
+        cb(null, false); // if no user or invalid password, return false
+      } else {
+        cb(null, user);
+      }
+    } catch (err) {
+      console.log("------- Error below -----------");
+      console.log(err);
+    }
+  }
+);
 ```
 
 `4` Serialize User with Passport in order to login
@@ -358,7 +376,7 @@ const STRATEGY = new LocalStrategy({
 ```js
 // Passport "serialize" info to be able to login
 passport.serializeUser((user, cb) => {
-    cb(null, user.id);
+  cb(null, user.id);
 });
 ```
 
@@ -366,16 +384,16 @@ passport.serializeUser((user, cb) => {
 
 ```js
 passport.deserializeUser(async (id, cb) => {
-    try {
-        const user = await db.user.findByPk(id);
+  try {
+    const user = await db.user.findByPk(id);
 
-        if (user) {
-            cb(null, user)
-        }
-    } catch (err) {
-        console.log('---- Yo... There is an error ----');
-        console.log(err);
+    if (user) {
+      cb(null, user);
     }
+  } catch (err) {
+    console.log("---- Yo... There is an error ----");
+    console.log(err);
+  }
 });
 ```
 
@@ -391,38 +409,41 @@ passport.use(STRATEGY);
 module.exports = passport;
 ```
 
-`8` Make *commit* message
+`8` Make _commit_ message
+
 ```text
 git add .
-git commit -m "ppConfig: Create passport configuration" 
+git commit -m "ppConfig: Create passport configuration"
 ```
 
 ## `8` Import Passport Config and Initialize
+
 After making local strategy for passport, we now need to import the **`ppConfig.js`** file into the server, initialize and use it as middleware throughout the app.
 
 `1` Import the `ppConfig.js` file like so with other imports inside server
 
 ```js
-const passport = require('./config/ppConfig');
+const passport = require("./config/ppConfig");
 ```
 
 `2` Initialize passport and passport session, invoke it, and pass through as middleware. Place this under the current middleware
 
 ```js
-app.use(passport.initialize());      // Initialize passport
-app.use(passport.session());         // Add a session
+app.use(passport.initialize()); // Initialize passport
+app.use(passport.session()); // Add a session
 ```
 
 `3` Import the `ppConfig.js` file inside of `auth.js` located in the **`controllers`** folder
 
 ```js
-const passport = require('./config/ppConfig');
+const passport = require("./config/ppConfig");
 ```
 
-`4` Make *commit* message
+`4` Make _commit_ message
+
 ```text
 git add .
-git commit -m "server: Import passport and pass through middleware" 
+git commit -m "server: Import passport and pass through middleware"
 ```
 
 ## `9` Add `isLoggedIn` Middleware
@@ -437,12 +458,12 @@ The purpose of this middleware will be to check to see if a user is logged in be
 
 ```js
 function isLoggedIn(req, res, next) {
-    if (!req.user) {
-        req.flash('error', 'You must be signed in to access page');
-        res.redirect('/auth/login');
-    } else {
-        next();
-    }
+  if (!req.user) {
+    req.flash("error", "You must be signed in to access page");
+    res.redirect("/auth/login");
+  } else {
+    next();
+  }
 }
 ```
 
@@ -453,21 +474,25 @@ module.exports = isLoggedIn;
 ```
 
 `5` Import `isLoggedIn` inside of **`server.js`**
+
 ```js
-const isLoggedIn = require('./middleware/isLoggedIn');
+const isLoggedIn = require("./middleware/isLoggedIn");
 ```
 
-`6` Make *commit* message
+`6` Make _commit_ message
+
 ```text
 git add .
-git commit -m "isLoggedIn: add middleware and import to server" 
+git commit -m "isLoggedIn: add middleware and import to server"
 ```
 
 ## `10` Make Login `/POST` Route
-We need now to make a `/POST` for the data that get submitted with the 
+
+We need now to make a `/POST` for the data that get submitted with the
 **login** form. The **`action`** in the fom specifies the route **`/auth/login`** that needs to be made for the data to go to. The data that is submitted will be check against the database to validity before being logged into the app.
 
 The form that the data will be submitted from:
+
 ```ejs
 <form action="/auth/login" method="POST">
   <label for="auth-email">Email</label>
@@ -481,27 +506,34 @@ The form that the data will be submitted from:
 ```
 
 `1` Create a **`post`** route for login. All the methods that are given for the `/login` post route are Passport's way of authenticating a user
+
 ```js
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/auth/login',
-  successFlash: 'Welcome back ...',
-  failureFlash: 'Either email or password is incorrect' 
-}));
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/auth/login",
+    successFlash: "Welcome back ...",
+    failureFlash: "Either email or password is incorrect",
+  })
+);
 ```
 
 `2` Run **`mocha`** to see how many tests passed
 
-`3` Make *commit* message
+`3` Make _commit_ message
+
 ```text
 git add .
 git commit -m "auth: add login post route"
 ```
 
 ## `10` Make Signup `/POST` Route
+
 We need now to make a `/POST` route for the data that get submitted with the **signup** form. The **`action`** in the fom specifies the route that needs to be made for the data to go to. The data that is submitted will be used to create a new user and added to the database. After signing up user, we will redirect them back to the login page to login.
 
 The form that the data will be submitted from:
+
 ```ejs
 <form action="/auth/signup" method="POST">
   <label for="new-email">Email</label>
@@ -520,69 +552,76 @@ The form that the data will be submitted from:
 `1` Create a **`post`** route for signup
 
 ```js
-router.post('/signup', async (req, res) => {
+router.post("/signup", async (req, res) => {
   // we now have access to the user info (req.body);
   const { email, name, password } = req.body; // goes and us access to whatever key/value inside of the object
   try {
     const [user, created] = await db.user.findOrCreate({
-        where: { email },
-        defaults: { name, password }
+      where: { email },
+      defaults: { name, password },
     });
 
     if (created) {
-        // if created, success and we will redirect back to / page
-        console.log(`----- ${user.name} was created -----`);
-        const successObject = {
-            successRedirect: '/',
-            successFlash: `Welcome ${user.name}. Account was created and logging in...`
-        }
-        // 
-        passport.authenticate('local', successObject)(req, res);
+      // if created, success and we will redirect back to / page
+      console.log(`----- ${user.name} was created -----`);
+      const successObject = {
+        successRedirect: "/",
+        successFlash: `Welcome ${user.name}. Account was created and logging in...`,
+      };
+      //
+      passport.authenticate("local", successObject)(req, res);
     } else {
       // Send back email already exists
-      req.flash('error', 'Email already exists');
-      res.redirect('/auth/signup'); // redirect the user back to sign up page to try again
+      req.flash("error", "Email already exists");
+      res.redirect("/auth/signup"); // redirect the user back to sign up page to try again
     }
   } catch (error) {
-        // There was an error that came back; therefore, we just have the user try again
-        console.log('**************Error');
-        console.log(error);
-        req.flash('error', 'Either email or password is incorrect. Please try again.');
-        res.redirect('/auth/signup');
+    // There was an error that came back; therefore, we just have the user try again
+    console.log("**************Error");
+    console.log(error);
+    req.flash(
+      "error",
+      "Either email or password is incorrect. Please try again."
+    );
+    res.redirect("/auth/signup");
   }
 });
 ```
 
 `2` Run **`mocha`** to see how many tests passed
 
-`3` Make *commit* message
+`3` Make _commit_ message
+
 ```text
 git add .
 git commit -m "auth: add signup post route"
 ```
 
 ## `11` Make `logout` /GET Route
+
 The purpose of this route is to log the user out of the app. The main part of this route will be a built in function provided by request ( `req` ) that would do this: **`req.logout()`**. Then we will display a flash message to the user letting them know that they logged out. Lastly, we will direct the user back to the home page ( `/` ) like the majority of apps do after logging out.
 
 `1` Create `/logout` route to log user out
 
 ```js
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
   req.logOut(); // logs the user out of the session
-  req.flash('success', 'Logging out... See you next time!');
-  res.redirect('/');
+  req.flash("success", "Logging out... See you next time!");
+  res.redirect("/");
 });
 ```
 
 `2` Run **`mocha`** to see how many tests passed
 
-`3` Make *commit* message
+`3` Make _commit_ message
+
 ```text
 git add .
 git commit -m "auth: add logout get route"
 ```
 
 ## `12` Create Partials For Alerts
+
 The purpose of these partials ( `views` ) is to render the `flash` alerts to the frontend. There will be some logic written out to display to the user is they may have gotten the password incorrect or that they were successful in logging in. We will be adding these partials to the **`layout.ejs`** page.
 
 `1` Create a folder called **`partials`** inside of the `views` folder
@@ -614,25 +653,30 @@ The purpose of these partials ( `views` ) is to render the `flash` alerts to the
 `5` Include **`Bootstrap`** CDN inside of the `layout.ejs` page
 
 Inside of the **`<head>`**
+
 ```ejs
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 ```
 
 Before the last **`</body>`** tag
+
 ```ejs
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 ```
 
-`6` Make *commit* message
+`6` Make _commit_ message
+
 ```text
 git add .
 git commit -m "alerts: add partials for flash alerts"
 ```
 
 ## `13` Add Logic to Layout Page For User
+
 The purpose of building out this logic will be to display on the page whether or not the user is logged in or not. If the user is logged in, then we would remove a link for logging in or signup. If the user is not logged in, the we will display the links for the user to log in or sign up.
 
 `1` Add conditional logic to display links for being logged in or not inside of `layout.ejs`
+
 ```ejs
 <% if (!currentUser) {%>
     <li><a href="/auth/signup">Signup</a></li>
@@ -646,15 +690,16 @@ The purpose of building out this logic will be to display on the page whether or
 `2` Double check **`layout.ejs`** to make sure it looks like ( [this](https://github.com/romebell/express_authentication/blob/main/solutions.md#2-layoutejs) )
 
 ## `14` Add Profile View and Controller
+
 The purpose of this step is to add a view and controller for a user to see their information on a profile page. We will to build a GET route to `/profile` that will send the user data to the `profile.ejs` to be displayed whenever a user logs in.
 
 `1` Create a GET route to `/profile` and include `isLoggedIn` middleware to check to see if user is logged in beforehand inside of `server.js`
 
 ```js
 // Add this below /auth controllers
-app.get('/profile', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get(); 
-  res.render('profile', { id, name, email });
+app.get("/profile", isLoggedIn, (req, res) => {
+  const { id, name, email } = req.user.get();
+  res.render("profile", { id, name, email });
 });
 ```
 
@@ -672,7 +717,8 @@ app.get('/profile', isLoggedIn, (req, res) => {
 
 `2` Run **`mocha`** to see how many tests passed
 
-`3` Make *commit* message
+`3` Make _commit_ message
+
 ```text
 git add .
 git commit -m "profile: add route and send data to view page"

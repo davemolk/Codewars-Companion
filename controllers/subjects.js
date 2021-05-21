@@ -37,13 +37,6 @@ router.post("/", isLoggedIn, async (req, res) => {
   res.redirect("/subjects");
 });
 
-router.delete("/:idx", isLoggedIn, async function (req, res) {
-  const deleteSubject = await db.subject.destroy({
-    where: { id: req.params.idx },
-  });
-  res.redirect("/subjects");
-});
-
 router.put("/edit/:idx", isLoggedIn, async (req, res) => {
   try {
     const subjectEdit = await db.subject.findOne({
@@ -56,6 +49,13 @@ router.put("/edit/:idx", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.delete("/:idx", isLoggedIn, async function (req, res) {
+  const deleteSubject = await db.subject.destroy({
+    where: { id: req.params.idx },
+  });
+  res.redirect("/subjects");
 });
 
 module.exports = router;

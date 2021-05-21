@@ -20,19 +20,6 @@ router.get("/new", isLoggedIn, (req, res) => {
     });
 });
 
-router.post("/", isLoggedIn, async (req, res) => {
-  const [subject, created] = await db.subject.findOrCreate({
-    where: { name: req.body.subject },
-  });
-  const newKata = await subject.createExercise({
-    name: req.body.name,
-    cw: req.body.cw,
-  });
-  const foundUser = await db.user.findByPk(req.user.id);
-  await foundUser.addExercise(newKata);
-  res.redirect("/katas");
-});
-
 router.get("/:id", isLoggedIn, (req, res) => {
   db.exercise
     .findOne({
@@ -59,6 +46,19 @@ router.get("/:id", isLoggedIn, (req, res) => {
           .catch((error) => res.status(400).render("404"));
       }
     });
+});
+
+router.post("/", isLoggedIn, async (req, res) => {
+  const [subject, created] = await db.subject.findOrCreate({
+    where: { name: req.body.subject },
+  });
+  const newKata = await subject.createExercise({
+    name: req.body.name,
+    cw: req.body.cw,
+  });
+  const foundUser = await db.user.findByPk(req.user.id);
+  await foundUser.addExercise(newKata);
+  res.redirect("/katas");
 });
 
 router.delete("/:idx", isLoggedIn, async function (req, res) {
