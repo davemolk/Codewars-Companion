@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("../models");
 const axios = require("axios");
 const isLoggedIn = require("../middleware/isLoggedIn");
+const { Op } = require("sequelize");
 
 router.get("/", isLoggedIn, async (req, res) => {
   const fetchKatas = await db.exercise.findAll();
@@ -49,16 +50,22 @@ router.get("/:id", isLoggedIn, (req, res) => {
 });
 
 router.post("/", isLoggedIn, async (req, res) => {
-  const [subject, created] = await db.subject.findOrCreate({
-    where: { name: req.body.subject },
-  });
-  const newKata = await subject.createExercise({
-    name: req.body.name,
-    cw: req.body.cw,
-  });
-  const foundUser = await db.user.findByPk(req.user.id);
-  await foundUser.addExercise(newKata);
-  res.redirect("/katas");
+  try {
+    // const [subject, created] = await db.subject.findOrCreate({
+    //   where: { name: req.body.subject },
+    // }); // put in subjects controller
+
+    const newKata = await db.exercise.findOrCreate({
+      where: { ...req.body },
+    });
+    console.log("*****************", newKata);
+    const foundUser = await db.user.findByPk(req.user.id);
+    await foundUser.addExercise(newKata[0]);
+    res.redirect("/katas");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/katas");
+  }
 });
 
 router.delete("/:idx", isLoggedIn, async function (req, res) {
