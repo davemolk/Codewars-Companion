@@ -34,7 +34,7 @@ The intended user is someone active on Codewars who wants a customizable way to 
 | POST | /auth/signup | creates a new user                     |
 | GET  | /auth/logout | logs out user and removes session info |
 | GET  | /profile     | renders user profile                   |
-| GET  | /profile     | renders user profile                   |
+| GET  | /katas       | renders user profile                   |
 | GET  | /profile     | renders user profile                   |
 
 ## `1` Create Database & Update Config
