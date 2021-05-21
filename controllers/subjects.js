@@ -41,8 +41,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 });
 
 // doesn't work either...
-router.delete("/:idx", async function (req, res) {
-  // add isLoggedIn
+router.delete("/:idx", isLoggedIn, async function (req, res) {
   const deleteSubject = await db.subject.destroy({
     where: { id: req.params.idx },
   });
