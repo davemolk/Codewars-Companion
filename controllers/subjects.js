@@ -12,15 +12,6 @@ router.get("/new", isLoggedIn, (req, res) => {
   res.render("subjects/new");
 });
 
-router.post("/", isLoggedIn, async (req, res) => {
-  const { name } = req.body;
-  console.log(name);
-
-  const newSubject = await db.subject.create({ name });
-  console.log(newSubject);
-  res.redirect("/subjects");
-});
-
 router.get("/:id", isLoggedIn, (req, res) => {
   db.subject
     .findOne({
@@ -31,6 +22,22 @@ router.get("/:id", isLoggedIn, (req, res) => {
       res.render("subjects/show", { subject });
     })
     .catch((error) => res.status(400).redirect("404"));
+});
+
+router.get("/edit/:id", isLoggedIn, async (req, res) => {
+  const subjectEdit = await db.subject.findOne({
+    where: { id: req.params.id },
+  });
+  res.render("subjects/edit", { subject: subjectEdit });
+});
+
+router.post("/", isLoggedIn, async (req, res) => {
+  const { name } = req.body;
+  console.log(name);
+
+  const newSubject = await db.subject.create({ name });
+  console.log(newSubject);
+  res.redirect("/subjects");
 });
 
 // doesn't work either...
@@ -44,10 +51,10 @@ router.delete("/:idx", async function (req, res) {
 
 router.put("/edit/:idx", isLoggedIn, async (req, res) => {
   try {
-    const thisSubject = await db.subject.findOne({
+    const subjectEdit = await db.subject.findOne({
       where: { id: req.params.idx },
     });
-    const updatedSubject = await thisSubject.update({
+    const updatedSubject = await subjectEdit.update({
       name: req.body.name,
     });
     res.redirect(`/subjects/${req.params.idx}`);
