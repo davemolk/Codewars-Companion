@@ -10,11 +10,6 @@ router.get("/", isLoggedIn, async (req, res) => {
   res.render("katas/index", { katas: fetchKatas, subjects: fetchSubjects });
 });
 
-// router.get("/", isLoggedIn, async (req, res) => {
-//   const fetchKatas = await db.exercise.findAll();
-//   res.render("katas/index", { katas: fetchKatas });
-// });
-
 router.get("/new", isLoggedIn, (req, res) => {
   db.subject
     .findAll()
@@ -56,21 +51,11 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
 router.post("/", isLoggedIn, async (req, res) => {
   try {
-    // const [subject, created] = await db.subject.findOrCreate({
-    //   where: { name: req.body.subject },
-    // }); // put in subjects controller
-
     const newKata = await db.exercise.findOrCreate({
       where: { ...req.body },
     });
     const foundUser = await db.user.findByPk(req.user.id);
     await foundUser.addExercise(newKata[0]);
-
-    // some logic?
-    // const fetchSubjects = await db.subject.findAll();
-    // // maybe here is the joint shit
-    // res.render("subjects/index", { subjects: fetchSubjects });
-
     res.redirect("/katas");
   } catch (error) {
     console.log(error);
@@ -78,18 +63,6 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-// router.post("/newkata", isLoggedIn, async (req, res) => {
-//   const [subject, created] = await db.subject.findOrCreate({
-//     where: { name: req.body.subject },
-//   });
-//   const newKata = await subject.createExercise({
-//     name: req.body.name,
-//     cw: req.body.cw,
-//   });
-//   const foundUser = await db.user.findByPk(req.user.id);
-//   await foundUser.addExercise(newKata);
-//   res.redirect("/katas");
-// });
 router.post("/new", isLoggedIn, async (req, res) => {
   const [subject, created] = await db.subject.findOrCreate({
     where: { name: req.body.subject },
@@ -102,41 +75,6 @@ router.post("/new", isLoggedIn, async (req, res) => {
   await foundUser.addExercise(newKata);
   res.redirect("/katas");
 });
-
-// router.get("/tagged", isLoggedIn, async (req, res) => {
-//   const fetchKatas = await db.exercise.findAll();
-//   const fetchSubjects = await db.subject.findAll();
-//   res.render("katas/tagged", { katas: fetchKatas, subjects: fetchSubjects });
-// });
-
-// router.post("/tagged", isLoggedIn, async (req, res) => {
-//   const subject = await db.subject.findOne({
-//     where: { name: req.body.subject },
-//     include: [db.user],
-//   });
-//   console.log("*****************  subject is ", subject);
-//   const newKata = await subject.createExercise({
-//     name: req.body.name,
-//     cw: req.body.cw,
-//   });
-//   const foundUser = await db.user.findByPk(req.user.id);
-//   console.log("************ found user is ", foundUser);
-//   await foundUser.addExercise(newKata);
-//   res.redirect("/katas");
-// });
-
-// router.post("/tagged", isLoggedIn, async (req, res) => {
-//   const subject = await db.subject.findOrCreate({
-//     where: { name: req.body.subject },
-//   });
-//   const newKata = await subject.createExercise({
-//     name: req.body.name,
-//     cw: req.body.cw,
-//   });
-//   const foundUser = await db.user.findByPk(req.user.id);
-//   await foundUser.addExercise(newKata);
-//   res.redirect("/katas");
-// });
 
 router.delete("/:idx", isLoggedIn, async function (req, res) {
   const deleteKata = await db.exercise.destroy({
