@@ -24,6 +24,10 @@ h1 {
   text-align: center;
 }
 
+.italic {
+  font-style: italic;
+}
+
 @font-face {
   font-family: "Lato";
   font-style: normal;
