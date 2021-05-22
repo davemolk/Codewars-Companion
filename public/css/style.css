@@ -17,8 +17,6 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color: #dd5b51;
-  overflow: hidden;
 
   background-image: url(/img/background4.jpg);
 }
