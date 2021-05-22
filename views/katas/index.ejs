@@ -1,23 +1,26 @@
-<ul>
-  <% katas.forEach(k => { %>
-  <li><%= k.name %> (id is <%= k.id %>)</li>
-  <a class="btn btn-secondary" href="/katas/<%= k.id %> ">more info</a>
+<h2 class="centered">Fave katas</h2>
+<div>
+  <ul>
+    <% katas.forEach(k => { %>
+    <h3><%= k.name %> (id is <%= k.id %>)</h3>
+    <a class="btn btn-secondary" href="/katas/<%= k.id %> ">more info</a>
 
-  <a
-    class="btn btn-secondary"
-    target="_blank"
-    href="http://www.codewars.com/kata/<%= k.cw %>/train/javascript"
-    >train again</a
-  >
-  <a
-    class="btn btn-secondary"
-    target="_blank"
-    href="http://www.codewars.com/kata/<%= k.cw %>/solutions/javascript"
-    >solutions</a
-  >
+    <a
+      class="btn btn-secondary"
+      target="_blank"
+      href="http://www.codewars.com/kata/<%= k.cw %>/train/javascript"
+      >train again</a
+    >
+    <a
+      class="btn btn-secondary"
+      target="_blank"
+      href="http://www.codewars.com/kata/<%= k.cw %>/solutions/javascript"
+      >solutions</a
+    >
 
-  <% }) %>
-</ul>
+    <% }) %>
+  </ul>
 
-<br />
-<a href="/">&larr; Back Home</a>
+  <br />
+  <a href="/">&larr; Back Home</a>
+</div>
