@@ -63,6 +63,7 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
+// this works for demo purposes
 // router.post("/new", isLoggedIn, async (req, res) => {
 //   const [subject, created] = await db.subject.findOrCreate({
 //     where: { name: req.body.subject },
@@ -76,7 +77,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 //   res.redirect("/katas");
 // });
 
-// not working
+// working but need to do more testing
 router.post("/new", isLoggedIn, async (req, res) => {
   console.log("my req.body is ***************", req.body);
   const subject = await db.subject.findOne({

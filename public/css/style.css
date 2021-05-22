@@ -1,15 +1,27 @@
+* {
+  font-family: "Raleway", sans-serif;
+}
+
 nav ul li {
   text-decoration: none;
   display: inline-block;
   margin-right: 0.3em;
+  font-size: 25px;
 }
 
 body {
-  background-color: rgb(24, 22, 22);
+  /* text-align: center; */
+  min-height: 100%;
+  margin: 0 auto;
+  background-color: rgb(106, 197, 244);
 }
 
 h1 {
   color: #dd5b51;
+}
+
+.centered {
+  text-align: center;
 }
 
 @font-face {
