@@ -13,7 +13,18 @@ body {
   /* text-align: center; */
   min-height: 100%;
   margin: 0 auto;
-  background-color: rgb(106, 197, 244);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #dd5b51;
+  overflow: hidden;
+
+  background-image: url(/img/background4.jpg);
+}
+
+.img {
+  filter: opacity(60%);
 }
 
 h1 {
