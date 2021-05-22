@@ -63,26 +63,10 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/new", isLoggedIn, async (req, res) => {
-  const [subject, created] = await db.subject.findOrCreate({
-    where: { name: req.body.subject },
-  });
-  const newKata = await subject.createExercise({
-    name: req.body.name,
-    cw: req.body.cw,
-  });
-  const foundUser = await db.user.findByPk(req.user.id);
-  await foundUser.addExercise(newKata);
-  res.redirect("/katas");
-});
-
-// not working
 // router.post("/new", isLoggedIn, async (req, res) => {
-//   console.log("my req.body is ***************", req.body);
-//   const subject = await db.subject.findOne({
+//   const [subject, created] = await db.subject.findOrCreate({
 //     where: { name: req.body.subject },
 //   });
-//   console.log("my req.body.subject is ***************", req.body.subject);
 //   const newKata = await subject.createExercise({
 //     name: req.body.name,
 //     cw: req.body.cw,
@@ -91,6 +75,23 @@ router.post("/new", isLoggedIn, async (req, res) => {
 //   await foundUser.addExercise(newKata);
 //   res.redirect("/katas");
 // });
+
+// not working
+router.post("/new", isLoggedIn, async (req, res) => {
+  console.log("my req.body is ***************", req.body);
+  const subject = await db.subject.findOne({
+    where: { name: req.body.subject.trim() },
+  });
+  console.log("my req.body.subject is ***************", req.body.subject);
+  console.log("my subject is ***************", subject);
+  const newKata = await subject.createExercise({
+    name: req.body.name,
+    cw: req.body.cw,
+  });
+  const foundUser = await db.user.findByPk(req.user.id);
+  await foundUser.addExercise(newKata);
+  res.redirect("/katas");
+});
 
 router.delete("/:idx", isLoggedIn, async function (req, res) {
   const deleteKata = await db.exercise.destroy({
