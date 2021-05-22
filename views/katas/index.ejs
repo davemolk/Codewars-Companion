@@ -1,16 +1,16 @@
 <ul>
   <% katas.forEach(k => { %>
   <li><%= k.name %> (id is <%= k.id %>)</li>
-  <a class="btn btn-primary" href="/katas/<%= k.id %> ">more info</a>
+  <a class="btn btn-secondary" href="/katas/<%= k.id %> ">more info</a>
 
   <a
-    class="btn btn-primary"
+    class="btn btn-secondary"
     target="_blank"
     href="http://www.codewars.com/kata/<%= k.cw %>/train/javascript"
     >train again</a
   >
   <a
-    class="btn btn-primary"
+    class="btn btn-secondary"
     target="_blank"
     href="http://www.codewars.com/kata/<%= k.cw %>/solutions/javascript"
     >solutions</a
