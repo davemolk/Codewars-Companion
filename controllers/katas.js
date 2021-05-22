@@ -90,12 +90,24 @@ router.post("/", isLoggedIn, async (req, res) => {
 //   await foundUser.addExercise(newKata);
 //   res.redirect("/katas");
 // });
-
-router.get("/tagged", isLoggedIn, async (req, res) => {
-  const fetchKatas = await db.exercise.findAll();
-  const fetchSubjects = await db.subject.findAll();
-  res.render("katas/tagged", { katas: fetchKatas, subjects: fetchSubjects });
+router.post("/new", isLoggedIn, async (req, res) => {
+  const [subject, created] = await db.subject.findOrCreate({
+    where: { name: req.body.subject },
+  });
+  const newKata = await subject.createExercise({
+    name: req.body.name,
+    cw: req.body.cw,
+  });
+  const foundUser = await db.user.findByPk(req.user.id);
+  await foundUser.addExercise(newKata);
+  res.redirect("/katas");
 });
+
+// router.get("/tagged", isLoggedIn, async (req, res) => {
+//   const fetchKatas = await db.exercise.findAll();
+//   const fetchSubjects = await db.subject.findAll();
+//   res.render("katas/tagged", { katas: fetchKatas, subjects: fetchSubjects });
+// });
 
 // router.post("/tagged", isLoggedIn, async (req, res) => {
 //   const subject = await db.subject.findOne({
