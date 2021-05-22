@@ -16,6 +16,21 @@
     >solutions</a
   >
 
+  <a class="btn btn-primary" href="/subjects">tag</a>
+
+  <form action="/katas/tagged" method="POST">
+    <input hidden type="text" name="name" value="<%= k.name %> " />
+    <input hidden type="text" name="cw" value="<%= k.cw %>" />
+    <p>Existing subjects</p>
+    <% subjects.forEach(s => { %>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="subject" value="<%= s.name %> " />
+      <%= s.name %>
+    </label>
+    <% }) %>
+    <button type="submit">tag kata</button>
+  </form>
+
   <% }) %>
 </ul>
 
