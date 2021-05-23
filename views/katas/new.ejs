@@ -1,36 +1,30 @@
 <h2 class="centered display-3 bump">Create and tag a kata</h2>
 
-<form class="form" action="/katas/new" method="POST">
-  <div class="row g-3 align-items-center">
-    <div class="col-auto">
-      <label for="name" class="col-form-label text-danger">Kata name</label>
-    </div>
-    <div class="col-auto">
-      <input required type="text" id="name" name="name" class="form-control" />
+<div class="centered container" id="box">
+  <form class="form" action="/katas/new" method="POST">
+    <div class="form-group row">
+      <label class="text-danger" for="name">Kata name</label>
+      <input required type="text" id="name" name="name" />
     </div>
 
-    <div class="row g-3 align-items-center">
-      <div class="col-auto">
-        <label for="cw" class="col-form-label text-danger">Kata Id</label>
-      </div>
-      <div class="col-auto">
-        <input required type="text" name="cw" id="cw" class="form-control" />
-      </div>
+    <div class="form-group row">
+      <label class="text-danger" for="cw">Kata Id </label>
+      <input required type="text" id="cw" name="cw" />
     </div>
-  </div>
-  <br />
-  <div class="form-check">
-    <h2 class="centered">Existing subjects</h2>
 
-    <h3><% subjects.forEach(s => { %></h3>
-    <label class="checkbox-inline">
-      <input type="checkbox" name="subject" value="<%= s.name %> " />
-      <%= s.name %>
-    </label>
-    <% }) %>
-  </div>
-  <br />
-  <div class="row g-3 align-items-center">
-    <button class="btn btn-secondary" type="submit">Tag kata</button>
-  </div>
-</form>
+    <div class="form-check row">
+      <h2 class="centered">Existing subjects</h2>
+
+      <h3><% subjects.forEach(s => { %></h3>
+      <label class="checkbox-inline">
+        <input type="checkbox" name="subject" value="<%= s.name %> " />
+        <%= s.name %>
+      </label>
+      <% }) %>
+    </div>
+
+    <div class="centered row">
+      <button class="btn btn-secondary" type="submit">Tag kata</button>
+    </div>
+  </form>
+</div>
