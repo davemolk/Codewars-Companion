@@ -17,7 +17,6 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-
   background-image: url(/img/background4.jpg);
 }
 
@@ -56,7 +55,7 @@ body {
   filter: opacity(60%);
 }
 
-h1 {
+.red {
   color: #aa4740;
 }
 

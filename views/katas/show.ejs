@@ -1,30 +1,40 @@
-<h2><%= name %></h2>
-<p><%= rank.name %></p>
-<br />
-<a
-  class="btn btn-primary"
-  target="_blank"
-  href="http://www.codewars.com/kata/<%= cw %>/train/javascript"
-  >train again</a
->
-<a
-  class="btn btn-primary"
-  target="_blank"
-  href="http://www.codewars.com/kata/<%= cw %>/solutions/javascript"
-  >solutions</a
->
+<div class="centered container">
+  <div>
+    <h2><%= name %></h2>
+  </div>
+  <div>
+    <h2 class="text-danger"><%= rank.name %></h2>
+  </div>
 
-<br />
+  <div>
+    <a
+      class="btn btn-primary"
+      target="_blank"
+      href="http://www.codewars.com/kata/<%= cw %>/train/javascript"
+      >train again</a
+    >
+    <a
+      class="btn btn-primary"
+      target="_blank"
+      href="http://www.codewars.com/kata/<%= cw %>/solutions/javascript"
+      >solutions</a
+    >
+  </div>
 
-<% kata.subjects.forEach(s => { %>
-<a href="/subjects/<%=s.id%>"> #<%= s.name %> </a>
-<% }) %>
+  <div>
+    <% kata.subjects.forEach(s => { %>
+    <a href="/subjects/<%=s.id%>">
+      <h3 class="text-danger">#<%= s.name %></h3></a
+    >
+    <% }) %>
 
-<br />
-<p><%= description %></p>
+    <hr />
+    <div class="backbox"><h4><%= description.slice(0, 1500).trim() %></h4></div>
+  </div>
 
-<br />
+  <hr />
 
-<form action="/katas/<%=kata.id %>?_method=DELETE" method="POST">
-  <button type="submit" class="btn btn-danger">Delete this kata?</button>
-</form>
+  <form action="/katas/<%=kata.id %>?_method=DELETE" method="POST">
+    <button type="submit" class="btn btn-danger">Delete this kata?</button>
+  </form>
+</div>
