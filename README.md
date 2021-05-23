@@ -18,7 +18,10 @@ Find it here: https://codewars-companion.herokuapp.com/ (make sure you're signed
 
 ## To Use
 
-Fill in
+1. Fork and Clone this respository to your local machine
+2. Open the directory in your text editor of choice
+3. Install dependencies and set up your database to work in your local port
+4. Make sure you're signed into your Codewars account before you sign up or log in to Codewars Companion.
 
 ## User Stories
 
@@ -32,19 +35,16 @@ The intended user is someone active on Codewars who wants a customizable way to 
 
 ## Models
 
-#### A Note
+| Model         | Schema                                   | Assocations                                   |
+| ------------- | ---------------------------------------- | --------------------------------------------- |
+| Exercise      | name, cw, userId,                        | Belongs to users and belongs to many subjects |
+| Subject       | name                                     | Belongs to many exercises.                    |
+| User          | name, email, password, codewars_username | Has many exercises                            |
+| subjectsKatas | subjectId, exerciseId                    |                                               |
 
-Sequelize is unable to handle the word "kata," so I've used "exercise" in the model to avoid errors and kata wherever possible.
+### A Note
 
-**Models**
-
-| Model    | Schema                                               | Assocations                                                  |
-| -------- | ---------------------------------------------------- | ------------------------------------------------------------ |
-| Exercise | name, cw, userId,                                    | Belongs to users and belongs to many subjects                |
-| Subject  | name                                                 | Belongs to many exercises.                                   |
-| User     | name, email, password, codewars_username             | Has many exercises                                           |
-| Tag      | content                                              | Belongs to many plants                                       |
-| User     | name, email, password, zipcode, userImg, lastWatered | Belongs to many plants, has many journals, has many comments |
+Sequelize was unable to handle the word "kata," so I've used "exercise" in the model to avoid errors and kata wherever possible. It initially threw a "no relation" error and wouldn't pluralize kata
 
 ## Code Excerpts
 
