@@ -21,17 +21,30 @@ body {
   background-image: url(/img/background4.jpg);
 }
 
-#box {
-  margin: 50px auto;
-  border-radius: 10px;
-  background: rgba(126, 89, 89, 0.521);
-  width: 100%;
-  height: 550px;
-  box-shadow: 30px 30px 30px 30px rgba(100, 100, 100, 0.514);
+.backbox {
+  margin: 30px auto;
+  border-radius: 20px;
+  background: rgba(126, 89, 89, 0.445);
+  width: 80%;
+  height: 100%;
+  box-shadow: 30px 30px 30px 30px rgba(100, 100, 100, 0.5);
+}
+
+.backbox2 {
+  margin: 30px auto;
+  border-radius: 20px;
+  background: rgba(126, 89, 89, 0.445);
+  width: 60%;
+  height: 70px;
+  box-shadow: 15px 15px 15px 15px rgba(100, 100, 100, 0.5);
 }
 
 .bump {
-  padding-bottom: 100px;
+  padding-bottom: 80px;
+}
+
+.single {
+  padding-top: 20px;
 }
 
 .form {

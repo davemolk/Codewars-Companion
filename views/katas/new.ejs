@@ -1,18 +1,18 @@
 <h2 class="centered display-3 bump">Create and tag a kata</h2>
 
-<div class="centered container" id="box">
+<div class="centered backbox">
   <form class="form" action="/katas/new" method="POST">
-    <div class="form-group row">
+    <div class="form-group">
       <label class="text-danger" for="name">Kata name</label>
       <input required type="text" id="name" name="name" />
     </div>
 
-    <div class="form-group row">
+    <div class="form-group">
       <label class="text-danger" for="cw">Kata Id </label>
       <input required type="text" id="cw" name="cw" />
     </div>
 
-    <div class="form-check row">
+    <div class="form-check">
       <h2 class="centered">Existing subjects</h2>
 
       <h3><% subjects.forEach(s => { %></h3>
@@ -23,7 +23,7 @@
       <% }) %>
     </div>
 
-    <div class="centered row">
+    <div class="centered">
       <button class="btn btn-secondary" type="submit">Tag kata</button>
     </div>
   </form>
