@@ -5,7 +5,12 @@ const axios = require("axios");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/", isLoggedIn, async (req, res) => {
-  const fetchKatas = await db.exercise.findAll();
+  const fetchKatas = await db.exercise.findAll({
+    where: { userId: req.user.id },
+  });
+  console.log("here is fetchKatas ****************", fetchKatas);
+  console.log("hi fucker");
+  console.log("here is req.user.id", req.user.id);
   const fetchSubjects = await db.subject.findAll();
   res.render("katas/index", { katas: fetchKatas, subjects: fetchSubjects });
 });

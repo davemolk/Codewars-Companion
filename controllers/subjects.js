@@ -5,7 +5,6 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/", isLoggedIn, async (req, res) => {
   const fetchSubjects = await db.subject.findAll();
-  // maybe here is the joint shit
   res.render("subjects/index", { subjects: fetchSubjects });
 });
 
