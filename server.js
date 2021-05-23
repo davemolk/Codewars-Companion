@@ -21,15 +21,15 @@ app.use(layouts);
 
 app.use(
   session({
-    secret: SECRET_SESSION, // What we actually will be giving the user on our site as a session cookie
-    resave: false, // Save the session even if it's modified, make this false
-    saveUninitialized: true, // If we have a new session, we save it, therefore making that true
+    secret: SECRET_SESSION,
+    resave: false,
+    saveUninitialized: true,
   })
 );
 app.use(flash());
 
-app.use(passport.initialize()); // Initialize passport
-app.use(passport.session()); // Add a session
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
   console.log(res.locals);
@@ -43,14 +43,12 @@ app.use(methodOverride("_method"));
 
 app.get("/", isLoggedIn, (req, res) => {
   const { id, name, email, codewars_username } = req.user.get();
-  console.log("****************", id, name, email, codewars_username);
   axios
     .get(
       `https://www.codewars.com/api/v1/users/${codewars_username}/code-challenges/completed?`
     )
     .then((response) => {
       let myKatasFull = response.data.data;
-      console.log("****************", { id });
       res.render("index", { id, myKatasFull });
     });
 });
@@ -60,7 +58,6 @@ app.get("/profile", isLoggedIn, (req, res) => {
   res.render("profile", { id, name, email, codewars_username });
 });
 
-// ************************************
 app.use("/auth", require("./controllers/auth"));
 app.use("/katas", require("./controllers/katas"));
 app.use("/subjects", require("./controllers/subjects"));

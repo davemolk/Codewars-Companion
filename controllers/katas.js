@@ -8,9 +8,6 @@ router.get("/", isLoggedIn, async (req, res) => {
   const fetchKatas = await db.exercise.findAll({
     where: { userId: req.user.id },
   });
-  console.log("here is fetchKatas ****************", fetchKatas);
-  console.log("hi fucker");
-  console.log("here is req.user.id", req.user.id);
   const fetchSubjects = await db.subject.findAll();
   res.render("katas/index", { katas: fetchKatas, subjects: fetchSubjects });
 });
@@ -22,6 +19,7 @@ router.get("/new", isLoggedIn, (req, res) => {
       res.render("katas/new", { subjects });
     })
     .catch((error) => {
+      console.log(error);
       res.status(400).render("404");
     });
 });
@@ -49,7 +47,10 @@ router.get("/:id", isLoggedIn, (req, res) => {
               kata: kata,
             });
           })
-          .catch((error) => res.status(400).render("404"));
+          .catch((error) => {
+            console.log(error);
+            res.status(400).render("404");
+          });
       }
     });
 });
@@ -68,28 +69,10 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-// this works for demo purposes
-// router.post("/new", isLoggedIn, async (req, res) => {
-//   const [subject, created] = await db.subject.findOrCreate({
-//     where: { name: req.body.subject },
-//   });
-//   const newKata = await subject.createExercise({
-//     name: req.body.name,
-//     cw: req.body.cw,
-//   });
-//   const foundUser = await db.user.findByPk(req.user.id);
-//   await foundUser.addExercise(newKata);
-//   res.redirect("/katas");
-// });
-
-// working but need to do more testing
 router.post("/new", isLoggedIn, async (req, res) => {
-  console.log("my req.body is ***************", req.body);
   const subject = await db.subject.findOne({
     where: { name: req.body.subject.trim() },
   });
-  console.log("my req.body.subject is ***************", req.body.subject);
-  console.log("my subject is ***************", subject);
   const newKata = await subject.createExercise({
     name: req.body.name,
     cw: req.body.cw,

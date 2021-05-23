@@ -21,7 +21,10 @@ router.get("/:id", isLoggedIn, (req, res) => {
     .then((subject) => {
       res.render("subjects/show", { subject });
     })
-    .catch((error) => res.status(400).redirect("404"));
+    .catch((error) => {
+      console.log(error);
+      res.status(400).redirect("404");
+    });
 });
 
 router.get("/edit/:id", isLoggedIn, async (req, res) => {
@@ -36,44 +39,6 @@ router.post("/", isLoggedIn, async (req, res) => {
   const newSubject = await db.subject.create({ name });
   res.redirect("/subjects");
 });
-
-// router.post("/bykata", isLoggedIn, async (req, res) => {
-//   try {
-
-//   }
-//   // const [subject, created] = await db.subject.findOrCreate({
-//   //   where: { name: req.body.subject },
-//   // }); // put in subjects controller
-
-//   // router.post("/", isLoggedIn, async (req, res) => {
-//   //   const [subject, created] = await db.subject.findOrCreate({
-//   //     where: { name: req.body.subject },
-//   //   });
-//   //   const newKata = await subject.createExercise({
-//   //     name: req.body.name,
-//   //     cw: req.body.cw,
-//   //   });
-//   //   const foundUser = await db.user.findByPk(req.user.id);
-//   //   await foundUser.addExercise(newKata);
-//   //   res.redirect("/katas");
-//   // });
-
-//   // router.post("/", isLoggedIn, async (req, res) => {
-//   //   const { name, cw, subject } = req.body;
-//   //   console.log("subject is ", subject);
-
-//   //   const foundSubject = await db.subject.findOne({ where: { name: subject } });
-//   //   console.log("found subject: ", foundSubject);
-//   //   const foundUser = await db.user.findByPk(req.user.id);
-//   //   console.log("found user: ", foundUser);
-//   //   const newKata = await db.exercise.create({ name, cw });
-//   //   const newAssociation = await foundUser.addExercise(newKata);
-//   //   newKata.addSubject(foundSubject);
-//   //   // console.log("new association is ", newAssociation);
-//   //   res.redirect("/katas");
-//   // });
-
-// });
 
 router.put("/edit/:idx", isLoggedIn, async (req, res) => {
   try {

@@ -1,10 +1,14 @@
 <h2 class="centered display-3">Subject list</h2>
-<ul>
-  <% subjects.forEach((s, index) => { %>
-  <h3><%= s.name %> (id <%= s.id %>)</h3>
-  <form method="get" action="/subjects/edit/<%= s.id %> ">
-    <button type="submit" class="btn btn-secondary">edit</button>
-  </form>
+<div class="backbox">
+  <ul>
+    <% subjects.forEach((s, index) => { %>
+    <div class="centered">
+      <h3><%= s.name %> (id <%= s.id %>)</h3>
+      <form method="get" action="/subjects/edit/<%= s.id %> ">
+        <button type="submit" class="btn btn-secondary">edit</button>
+      </form>
 
-  <% }) %>
-</ul>
+      <% }) %>
+    </div>
+  </ul>
+</div>
