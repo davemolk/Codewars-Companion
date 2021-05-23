@@ -21,6 +21,15 @@ body {
   background-image: url(/img/background4.jpg);
 }
 
+.bump {
+  padding-bottom: 100px;
+}
+
+.form {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
 .img {
   filter: opacity(60%);
 }
