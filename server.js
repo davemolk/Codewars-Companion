@@ -42,7 +42,7 @@ app.use(express.static("public"));
 app.use(methodOverride("_method"));
 
 app.get("/", isLoggedIn, (req, res) => {
-  const { id, name, email, codewars_username } = req.user.get();
+  const { id, codewars_username } = req.user.get();
   axios
     .get(
       `https://www.codewars.com/api/v1/users/${codewars_username}/code-challenges/completed?`
