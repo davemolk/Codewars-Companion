@@ -59,32 +59,13 @@ async function createKata() {
 // };
 // fetchAllSubjects();
 
-// DOES NOT WORK
-// const addSubjectToKata = () => {
-//   db.kata
-//     .findOne({
-//       where: { name: "Sum of Cubes" },
-//     })
-//     .then((k) => {
-//       k.createSubject({
-//         name: "arrays",
-//       }).then((newSub) => {
-//         console.log(newSub);
-//       });
-//     });
-// };
-
-// addSubjectToKata();
-
 async function addKataToSubject() {
-  //   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const sum = await db.exercise.findOne({
     where: { name: "Sum of Cubes" },
   });
   const algo = await db.subject.create({
     name: "strings",
   });
-  //   algo.addKata(sum);
   const relationInfo = await algo.addExercise(sum);
   console.log(relationInfo);
 }
