@@ -188,7 +188,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
 ### Known Issues
 
-- The subject model needs a userId and the code should be updated so that subjects.
+- The subject model needs a userId and the code should be updated so that subjects are associated with users.
 - The user model should have a "has many" association with subjects.
 - The code doesn't have built-in protocols to prevent duplicates in all cases.
 - Id numbers don't seem to restart with new users but instead continue to increase.
