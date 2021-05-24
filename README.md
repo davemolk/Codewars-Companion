@@ -46,6 +46,31 @@ The intended user is someone active on Codewars who wants a customizable way to 
 
 Sequelize was unable to handle the word "kata," so I've used "exercise" in the model to avoid errors and kata wherever possible. It initially threw a "no relation" error and wouldn't pluralize kata
 
+## Routes
+
+| CRUD     | Route                | Function                                                                                 |
+| -------- | -------------------- | ---------------------------------------------------------------------------------------- |
+| `GET`    | `/`                  | home page that welcomes user. once signed in, displays a list of user's compeleted katas |
+| `GET`    | `/profile`           | displays information about the user                                                      |
+| `GET`    | `/auth/login`        | renders login page                                                                       |
+| `POST`   | `/auth/login`        | signs in existing user                                                                   |
+| `GET`    | `/auth/signup`       | renders sign up page                                                                     |
+| `POST`   | `/auth/signup`       | creates new user in database                                                             |
+| `GET`    | `/auth/logout`       | logs out user                                                                            |
+| `GET`    | `/katas`             | loads fave katas from the database                                                       |
+| `GET`    | `/katas/:id`         | loads individual kata and subject associated with it (if any)                            |
+| `GET`    | `/katas/new`         | renders page for user to create a tagged kata                                            |
+| `POST`   | `/katas`             | adds kata to a user's faves database                                                     |
+| `POST`   | `/katas/new`         | associates kata with user and subject                                                    |
+| `DELETE` | `/katas/:idx`        | deletes kata from the database                                                           |
+| `GET`    | `/subjects`          | loads subjects from the database                                                         |
+| `GET`    | `/subjects/:id`      | loads individual subject and all katas associated with it (if any)                       |
+| `GET`    | `/subjects/new`      | renders page for user to create a subject                                                |
+| `GET`    | `/subjects/edit/:id` | renders page for user to edit a subject                                                  |
+| `POST`   | `/subjects`          | adds subject to the database                                                             |
+| `PUT`    | `/subjects/edit:idx` | edits subject name in database                                                           |
+| `DELETE` | `/subjects/:idx`     | deletes subject from the database                                                        |
+
 ## Code Excerpts
 
 1. This excerpt controls the initial API call to codewars to pull down all completed katas by the user. This information is then passed to the index.ejs page (second excerpt) to create a list of the kata.
